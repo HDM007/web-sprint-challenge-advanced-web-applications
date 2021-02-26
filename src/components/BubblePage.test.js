@@ -3,6 +3,8 @@ import { render, screen } from "@testing-library/react";
 import BubblePage from "./BubblePage";
 import {getColorData as getColors } from './GetColorData'
 
+//remember to think in terms of user inputs step by step
+
 jest.mock('./GetColorData.js');
 const colors = {
   data: [
@@ -17,6 +19,11 @@ test("Renders BubblePage without errors", async () => {
 });
 
 test("Fetches data and renders the bubbles on mounting", async () => {
+  getColors.mockResolvedValueOnce(colors);
+  render(<BubblePage />)
+  const data = await screen.findAllByTestId('data');
+  expect(data).toHaveLength(3)
+
 });
 
 //Task List

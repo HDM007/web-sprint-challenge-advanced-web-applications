@@ -27,7 +27,8 @@ const Login = () => {
     axios
     .post('http://localhost:5000/api/login', form)
     .then(response => {
-      localStorage.setItem('token', response.data.payload)
+      localStorage.setItem('token', response.data.payload);
+      push('/bubbles')
     })
     .catch(error => {
       setError(error)
@@ -73,7 +74,7 @@ const Login = () => {
             <div>
               {error && <p>Username or Password not valid.</p>}
             </div>
-            <button>Login</button>
+            <button>Submit</button>
       </form>
 
     </>

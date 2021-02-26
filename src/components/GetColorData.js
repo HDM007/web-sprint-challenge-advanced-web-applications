@@ -2,7 +2,7 @@ import {axiosWithAuth} from "../helpers/axiosWithAuth";
 
 const getColorData = () => {
     return axiosWithAuth()
-    .get('/colors')
+    .get('http://localhost:5000/api/colors')
     .then(response => {
         return response;
     })

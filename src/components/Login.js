@@ -1,14 +1,48 @@
-import React, { useEffect } from "react";
+import React, {useState } from "react";
 import axios from "axios";
+import { useHistory } from "react-router-dom";
+
+const initialState = {
+  username: "Lambda School",
+  password: "i<3Lambd4"
+}
 
 const Login = () => {
+  const [form, setForm] = useState(initialState);
+  const { push } = useHistory();
+  const [error, setError] = useState(false);
+
   // make a post request to retrieve a token from the api
   // when you have handled the token, navigate to the BubblePage route
+  const handleChange = event => {
+    setForm({
+      ...form,
+      [event.target.name]: event.target.value
+    });
+  }
 
-  useEffect(()=>{
-    // make a post request to retrieve a token from the api
-    // when you have handled the token, navigate to the BubblePage route
-  });
+  const handleSubmit = event => {
+    event.preventDefault();
+
+    axios
+    .post('http://localhost:5000/api/login', form)
+    .then(response => {
+      localStorage.setItem('token', response.data.payload)
+    })
+    .catch(error => {
+      setError(error)
+      setForm(initialState)
+    }
+    )
+  }
+  //above should post the credentials, run the auth, set the token, and post an error if there's an issue. Error should appear with paragraph below.
+
+  //useEffect just seems unnecessary here.
+
+  // useEffect(()=>{
+  //   // make a post request to retrieve a token from the api
+  //   // when you have handled the token, navigate to the BubblePage route
+  // });
 
   return (
     <>
@@ -16,6 +50,32 @@ const Login = () => {
         Welcome to the Bubble App!
         <p>Build a login page here</p>
       </h1>
+      <form onSubmit={handleSubmit}>
+        <label>
+          Username
+          <input
+              name='username'
+              type='text'
+              value={form.username}
+              onChange={handleChange}
+            />
+          </label>
+          
+          <label>
+            Password
+            <input
+              name='password'
+              type='password'
+              value={form.password}
+              onChange={handleChange}
+            />
+            </label>
+            <div>
+              {error && <p>Username or Password not valid.</p>}
+            </div>
+            <button>Login</button>
+      </form>
+
     </>
   );
 };
